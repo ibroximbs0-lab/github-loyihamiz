@@ -1,11 +1,698 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dsdsdsds</title>
-  </head>
-  <body>
-    <h1>dsdsdsds</h1>
-  </body>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Junior Academy — Matematika, General English, Dasturlash, Testlar va CoinShop</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#f7f9fc] text-slate-900 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- ================= TOP NAVIGATION BAR (4-rasm) ================= -->
+  <header class="bg-white border-b border-slate-100 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo & Navigation -->
+      <div class="flex items-center gap-8">
+        <a href="javascript:void(0)" onclick="switchView('dashboard')" class="flex items-center gap-2.5 group">
+          <div class="w-11 h-11 bg-[#ff5b22] rounded-2xl flex items-center justify-center text-white shadow-md shadow-orange-200 group-hover:scale-105 transition-transform">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12c0 4.14 2.53 7.69 6.16 9.17-.06-.5-.04-1.12.08-1.63.12-.52.8-3.4 3.76-3.54 2.96.14 3.64 3.02 3.76 3.54.12.51.14 1.13.08 1.63C19.47 19.69 22 16.14 22 12c0-5.52-4.48-10-10-10zm-3 7.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5S7.5 11.83 7.5 11s.67-1.5 1.5-1.5zm6 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zm-3 6c-1.39 0-2.5-.89-2.5-2h5c0 1.11-1.11 2-2.5 2z"/>
+            </svg>
+          </div>
+          <div>
+            <span class="text-2xl font-black tracking-tight text-slate-900 block leading-tight">junior</span>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block -mt-1">academy</span>
+          </div>
+        </a>
+
+        <!-- Main Navigation Links -->
+        <nav class="hidden md:flex items-center gap-6 text-sm font-bold text-slate-600">
+          <button onclick="switchView('dashboard')" class="hover:text-orange-500 transition-colors">Bosh sahifa</button>
+          <button onclick="switchView('courses')" class="hover:text-orange-500 transition-colors">Barcha Kurslar</button>
+          <button onclick="switchView('math-path')" class="hover:text-orange-500 transition-colors flex items-center gap-1">
+            <span>Matematika</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] bg-amber-100 text-amber-700 font-extrabold">Xarita</span>
+          </button>
+          <button onclick="switchView('english-course')" class="hover:text-orange-500 transition-colors">General English</button>
+          <button onclick="switchView('shop')" class="hover:text-orange-500 transition-colors text-orange-600">CoinShop</button>
+          <button onclick="openCoinHistory()" class="hover:text-orange-500 transition-colors">Coin tarixi</button>
+        </nav>
+      </div>
+
+      <!-- Right Action Items (4-rasmdagi 20972 energiya, 21702 coin, savatcha) -->
+      <div class="flex items-center gap-3">
+        <!-- Energy Points (20972) -->
+        <div class="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-slate-50 border border-slate-200/80 text-slate-700 font-black text-xs shadow-sm hover:bg-slate-100 transition-colors" title="Energiya ballari">
+          <span class="text-blue-500 text-sm">⚡</span>
+          <span class="user-energy-display">20,972</span>
+        </div>
+
+        <!-- Coin Counter (21702) -->
+        <div onclick="openCoinHistory()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 font-black text-xs shadow-sm hover:bg-amber-100 transition-colors cursor-pointer" title="Sizning Coinlaringiz">
+          <span class="text-base">🪙</span>
+          <span class="user-coins-display text-amber-700">21,702</span>
+        </div>
+
+        <!-- Cart Button 🛒 -->
+        <button onclick="switchView('shop')" class="relative w-10 h-10 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors" title="CoinShop Savatchasi">
+          <span class="text-base">🛒</span>
+        </button>
+
+        <!-- Notification Bell -->
+        <button onclick="showToast('Sizda yangi vebinar bildirishnomasi mavjud!', 'info')" class="relative w-10 h-10 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+          <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+        </button>
+
+        <!-- Profile Avatar -->
+        <div class="flex items-center gap-2 pl-1 cursor-pointer" onclick="showToast('Rustamjonov Ibrohim — O‘quvchi profili', 'info')">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-orange-400 to-amber-500 text-white font-bold text-xs flex items-center justify-center shadow-md shadow-orange-200">
+            RI
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT VIEWPORT ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- ================= VIEW 1: DASHBOARD (4-rasmga 100% mos) ================= -->
+    <div id="view-dashboard" class="space-y-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- LEFT 2 COLUMNS -->
+        <div class="lg:col-span-2 space-y-8">
+          
+          <!-- Hero Banner (4-rasm) -->
+          <div class="relative bg-white rounded-3xl p-8 border border-slate-100 card-shadow overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="z-10 max-w-md">
+              <span class="text-xs font-bold text-slate-400 block mb-1">Salom, Rustamjonov Ibrohim</span>
+              <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-2 leading-tight">
+                Bugun sizni<br>uzoq kutdim!
+              </h1>
+              <p class="text-sm text-slate-500 mb-6">
+                Darslarga tayyormisiz? <strong class="text-slate-800">2 ta dars</strong> tayyor turibdi
+              </p>
+              
+              <!-- +37 Coin olish tugmasi -->
+              <button id="hero-coin-btn" onclick="claimDailyBonus()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold text-xs hover:bg-amber-100 hover:scale-105 active:scale-95 transition-all shadow-sm">
+                <span>🪙</span>
+                <span>+37 coin olish</span>
+              </button>
+            </div>
+
+            <!-- 3D Robot & 1/3 Circular Badge -->
+            <div class="relative flex items-center justify-center">
+              <div class="absolute top-0 right-0 z-20 w-12 h-12 rounded-full bg-slate-900/90 text-white border-2 border-white flex items-center justify-center text-xs font-black shadow-lg">
+                1/3
+              </div>
+
+              <div class="w-48 h-48 sm:w-56 sm:h-56 relative flex items-center justify-center robot-animate">
+                <svg class="w-48 h-48 drop-shadow-2xl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="35" y="40" width="130" height="95" rx="30" fill="#e8dfd5" stroke="#786654" stroke-width="4"/>
+                  <rect x="48" y="52" width="104" height="72" rx="20" fill="#0f172a"/>
+                  <rect x="66" y="70" width="16" height="22" rx="8" fill="#10b981"/>
+                  <rect x="118" y="70" width="16" height="22" rx="8" fill="#10b981"/>
+                  <path d="M88 100 Q100 112 112 100" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+                  <path d="M55 145 C55 135 145 135 145 145 L155 190 C155 195 45 195 45 190 Z" fill="#1e293b"/>
+                  <ellipse cx="40" cy="140" rx="14" ry="16" fill="#e8dfd5" stroke="#786654" stroke-width="3"/>
+                  <path d="M38 126 C38 120 48 120 48 128 L48 138" stroke="#786654" stroke-width="4" stroke-linecap="round"/>
+                  <circle cx="100" cy="28" r="8" fill="#ff5b22"/>
+                  <line x1="100" y1="36" x2="100" y2="40" stroke="#786654" stroke-width="4"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Ta Asosiy Karta -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div onclick="switchView('shop')" class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow card-hover cursor-pointer group flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">🎁</div>
+              <div>
+                <h3 class="text-sm font-black text-slate-800 group-hover:text-orange-500 transition-colors">CoinShop</h3>
+                <p class="text-[11px] text-slate-400">Sovg‘alar ro‘yxati</p>
+              </div>
+            </div>
+
+            <div onclick="switchView('courses')" class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow card-hover cursor-pointer group flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-blue-50 text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">📚</div>
+              <div>
+                <h3 class="text-sm font-black text-slate-800 group-hover:text-blue-500 transition-colors">Kurslar</h3>
+                <p class="text-[11px] text-slate-400">Barcha kurslaringiz</p>
+              </div>
+            </div>
+
+            <div onclick="document.getElementById('leaderboard-section').scrollIntoView({behavior: 'smooth'})" class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow card-hover cursor-pointer group flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-purple-50 text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">🏆</div>
+              <div>
+                <h3 class="text-sm font-black text-slate-800 group-hover:text-purple-500 transition-colors">Leaderboard</h3>
+                <p class="text-[11px] text-slate-400">Reytingdagi o‘rningiz</p>
+              </div>
+            </div>
+
+            <div onclick="showToast('Sertifikatlaringiz: Matematika & English darslari muvaffaqiyatli yakunlanmoqda!', 'info')" class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow card-hover cursor-pointer group flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-yellow-50 text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">🎖️</div>
+              <div>
+                <h3 class="text-sm font-black text-slate-800 group-hover:text-yellow-600 transition-colors">Sertifikatlar</h3>
+                <p class="text-[11px] text-slate-400">Yutuqlaringiz</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bugungi Vazifalar (4-rasmdagi 3 ta dars) -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-5">
+            <h2 class="text-lg font-black text-slate-900">Bugungi vazifalar</h2>
+            
+            <div class="space-y-3">
+              <!-- 1. Matematika -->
+              <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-amber-300 transition-colors cursor-pointer" onclick="openLessonTestModal('math', 6)">
+                <div class="w-8 h-8 rounded-full bg-orange-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm shadow-orange-300">1</div>
+                <div class="w-20 h-14 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-xs font-black shrink-0 p-1 text-center shadow-sm">Matematika</div>
+                <div class="flex-1">
+                  <h4 class="text-sm font-bold text-slate-800">Matematika</h4>
+                  <p class="text-xs text-slate-500">Birhadni ko‘phadga ko‘paytirish</p>
+                </div>
+                <span class="px-4 py-2 rounded-xl bg-amber-100 text-amber-800 text-xs font-black flex items-center gap-1">🪙 +33 coin</span>
+              </div>
+
+              <!-- 2. Dasturlash kursi -->
+              <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-orange-300 transition-colors cursor-pointer" onclick="openLessonTestModal('programming', 1)">
+                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-black text-xs flex items-center justify-center shrink-0">2</div>
+                <div class="w-20 h-14 rounded-xl bg-slate-800 flex items-center justify-center text-white text-xs font-black shrink-0 shadow-sm">Web Code</div>
+                <div class="flex-1">
+                  <h4 class="text-sm font-bold text-slate-800">Dasturlash kursi</h4>
+                  <p class="text-xs text-slate-500">Github orqali o‘zgartirish kiritish</p>
+                </div>
+                <span class="px-4 py-2 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 text-xs font-black flex items-center gap-1">🪙 +24 coin</span>
+              </div>
+
+              <!-- 3. General English -->
+              <div class="flex items-center gap-4 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100">
+                <div class="w-8 h-8 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center shrink-0 shadow-sm shadow-emerald-200">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="w-20 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-black shrink-0 shadow-sm">ENGLISH</div>
+                <div class="flex-1">
+                  <h4 class="text-sm font-bold text-slate-800">General English</h4>
+                  <p class="text-xs text-slate-500">Great discoveries</p>
+                </div>
+                <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 text-emerald-700 text-xs font-bold">✓ Bajarildi</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mini O'yinlar Bo'limi (4-rasm) -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-4">
+            <h2 class="text-lg font-black text-slate-900">Mini o‘yinlar</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div onclick="switchView('math-path')" class="p-4 rounded-2xl bg-blue-50/70 border border-blue-100 cursor-pointer hover:scale-105 transition-all">
+                <div class="text-3xl mb-2">🎲</div>
+                <h4 class="text-sm font-black text-blue-900">Matematika</h4>
+                <p class="text-[11px] text-blue-600">Sonlarni o‘rganamiz</p>
+              </div>
+              <div onclick="switchView('english-course')" class="p-4 rounded-2xl bg-purple-50/70 border border-purple-100 cursor-pointer hover:scale-105 transition-all">
+                <div class="text-3xl mb-2">🔤</div>
+                <h4 class="text-sm font-black text-purple-900">So‘zlarni top</h4>
+                <p class="text-[11px] text-purple-600">Ingliz tilini o‘rganing</p>
+              </div>
+              <div onclick="showToast('Ranglar va grafik dizayn o‘yini ochilmoqda...', 'info')" class="p-4 rounded-2xl bg-rose-50/70 border border-rose-100 cursor-pointer hover:scale-105 transition-all">
+                <div class="text-3xl mb-2">🎨</div>
+                <h4 class="text-sm font-black text-rose-900">Ranglarni aralashtir</h4>
+                <p class="text-[11px] text-rose-600">Grafik dizayn</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leaderboard Bo'limi (4-rasmdagi Podiym va Top 10) -->
+          <div id="leaderboard-section" class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-black text-slate-900">Leaderboard</h2>
+                <p class="text-xs text-slate-400">Umumiy reyting</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-2xl font-black text-slate-900">20972</span>
+                <span class="text-xs font-bold text-slate-400">point (#28-o‘rin)</span>
+              </div>
+            </div>
+
+            <!-- 3 Talik Podiym (1, 2, 3) -->
+            <div class="flex items-end justify-center gap-3 pt-4">
+              <!-- 2-o'rin -->
+              <div class="flex flex-col items-center flex-1 max-w-[130px]">
+                <div class="w-12 h-12 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center font-bold text-xs mb-2">#2</div>
+                <div class="podium-2 w-full h-28 flex flex-col items-center justify-center text-center p-2">
+                  <span class="text-xs font-black text-slate-700">47540 point</span>
+                  <span class="text-[10px] text-slate-500 font-semibold">Diyorbek</span>
+                </div>
+              </div>
+
+              <!-- 1-o'rin (Oltin) -->
+              <div class="flex flex-col items-center flex-1 max-w-[140px]">
+                <div class="w-14 h-14 rounded-full bg-amber-400 border-2 border-amber-500 flex items-center justify-center text-xl mb-2 shadow-lg shadow-amber-200">👑</div>
+                <div class="podium-1 w-full h-36 flex flex-col items-center justify-center text-center p-2">
+                  <span class="text-xs font-black text-amber-900">47970 point</span>
+                  <span class="text-[10px] text-amber-700 font-extrabold">Golibjon.N</span>
+                </div>
+              </div>
+
+              <!-- 3-o'rin -->
+              <div class="flex flex-col items-center flex-1 max-w-[130px]">
+                <div class="w-12 h-12 rounded-full bg-orange-200 border-2 border-orange-300 flex items-center justify-center font-bold text-xs mb-2">#3</div>
+                <div class="podium-3 w-full h-24 flex flex-col items-center justify-center text-center p-2">
+                  <span class="text-xs font-black text-orange-900">43741 point</span>
+                  <span class="text-[10px] text-orange-700 font-semibold">Tigireva D</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Top 10 Yetakchilar Ro'yxati -->
+            <div class="space-y-2 pt-2">
+              <h4 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Top 10 yetakchilar ro‘yxati</h4>
+              <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-2"><span>#4</span> <span>Najmiddinova Muxlisa</span></span>
+                <span>42220 point</span>
+              </div>
+              <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-2"><span>#5</span> <span>Hasanova Diloromxon</span></span>
+                <span>41022 point</span>
+              </div>
+              <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-2"><span>#6</span> <span>Muzaffarova Mahnura</span></span>
+                <span>37531 point</span>
+              </div>
+              <div class="flex items-center justify-between p-3 rounded-2xl bg-orange-50 border border-orange-300 text-xs font-extrabold text-orange-900">
+                <span class="flex items-center gap-2"><span>#28</span> <span>Rustamjonov Ibrohim (Siz)</span></span>
+                <span>20972 point</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: 4-rasmdagi barcha o'ng yon panel vidjetlari -->
+        <div class="space-y-6">
+          
+          <!-- Streak Vidjeti (4-rasmdagi 61 kunlik doira) -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow flex flex-col items-center justify-center text-center">
+            <div class="streak-circle-container relative my-2">
+              <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+                <div class="text-3xl mb-1 animate-bounce">🔥</div>
+                <span class="text-3xl font-black text-slate-900 tracking-tight user-streak-display">61</span>
+                <span class="text-[11px] font-bold text-slate-400">Kun ketma-ket</span>
+              </div>
+              <div class="streak-day-badge active" style="top: 0; left: 78px;"><span>🔥</span><span>Du</span></div>
+              <div class="streak-day-badge active" style="top: 25px; right: 10px;"><span>🔥</span><span>Se</span></div>
+              <div class="streak-day-badge active" style="top: 95px; right: 5px;"><span>🔥</span><span>Ch</span></div>
+              <div class="streak-day-badge active" style="bottom: 5px; right: 40px;"><span>🔥</span><span>Pa</span></div>
+              <div class="streak-day-badge active" style="bottom: 5px; left: 40px;"><span>🔥</span><span>Ju</span></div>
+              <div class="streak-day-badge active" style="top: 95px; left: 5px;"><span>🔥</span><span>Sh</span></div>
+              <div class="streak-day-badge active" style="top: 25px; left: 10px;"><span>🔥</span><span>Ya</span></div>
+            </div>
+            <p class="text-xs text-slate-500 font-medium mt-3">Bugungi darslarni bajaring va olov zanjirini davom ettiring!</p>
+          </div>
+
+          <!-- Oylik Challenge (Matematika +500 coin) -->
+          <div class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl p-5 text-white card-shadow flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase tracking-wider font-extrabold text-purple-200 block">Oylik challenge</span>
+              <h4 class="text-sm font-black mb-1">Matematika +500 coin</h4>
+              <p class="text-[11px] text-purple-100">Barcha 7-sinf misollarini yeching</p>
+            </div>
+            <button onclick="claimMonthlyChallenge()" class="px-4 py-2.5 rounded-xl bg-white text-purple-700 font-black text-xs hover:bg-purple-50 transition-all shadow-md">
+              Olish 🏆
+            </button>
+          </div>
+
+          <!-- 6 Noyabr 2026 Sovg'a Qutisi (4-rasm) -->
+          <div class="bg-gradient-to-r from-amber-400 to-orange-500 rounded-3xl p-5 text-white card-shadow flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase tracking-wider font-extrabold text-amber-100 block">6 Noyabr 2026</span>
+              <h4 class="text-sm font-black mb-1">Kutilmagan Sovg'a Qutisi</h4>
+              <p class="text-[11px] text-amber-100">Ichida maxsus +100 coin bor</p>
+            </div>
+            <button onclick="claimMysteryBox()" class="px-4 py-2.5 rounded-xl bg-white text-orange-600 font-black text-xs hover:bg-orange-50 transition-all shadow-md">
+              Ochish 🎁
+            </button>
+          </div>
+
+          <!-- Mentor Yordami (24/7 onlayn) -->
+          <div class="bg-white rounded-3xl p-5 border border-slate-100 card-shadow space-y-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-xl">👨‍🏫</div>
+              <div>
+                <h4 class="text-sm font-black text-slate-800">Mentor yordami</h4>
+                <span class="text-[11px] text-emerald-600 font-bold flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> 24/7 onlayn</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-500">Dars bo‘yicha savolingiz bormi yoki biror topshiriqda qiyinchilik tug'ildimi?</p>
+            <button onclick="showToast('Mentor bilan aloqa oynasi ochilmoqda...', 'info')" class="w-full py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition-colors">
+              Mentorga yozish
+            </button>
+          </div>
+
+          <!-- Do'stingizni taklif qiling (+1000 coin) -->
+          <div class="bg-white rounded-3xl p-5 border border-slate-100 card-shadow space-y-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl">📢</div>
+              <div>
+                <h4 class="text-sm font-black text-slate-800">Do‘stingizni taklif qiling</h4>
+                <span class="text-[11px] text-amber-600 font-black">+1000 coin oling</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-500">Do‘stingiz o‘quv kursimizga qo‘shilsa, sizga va do‘stingizga 1000 coin taqdim etiladi!</p>
+            <button onclick="inviteFriend()" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors">
+              Do‘stlarni taklif qilish 🔗
+            </button>
+          </div>
+
+          <!-- Faollik Kalendari (Noyabr 2026) -->
+          <div class="bg-white rounded-3xl p-5 border border-slate-100 card-shadow space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-black text-slate-800">Faollik kalendari</h4>
+              <span class="text-xs font-bold text-slate-400">Noyabr 2026</span>
+            </div>
+            <div class="grid grid-cols-7 gap-1.5 text-center text-[10px] font-bold text-slate-400">
+              <span>Du</span><span>Se</span><span>Ch</span><span>Pa</span><span>Ju</span><span>Sh</span><span>Ya</span>
+            </div>
+            <div class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold">
+              <span class="p-1 rounded-lg bg-emerald-100 text-emerald-800">1</span>
+              <span class="p-1 rounded-lg bg-emerald-100 text-emerald-800">2</span>
+              <span class="p-1 rounded-lg bg-emerald-100 text-emerald-800">3</span>
+              <span class="p-1 rounded-lg bg-emerald-100 text-emerald-800">4</span>
+              <span class="p-1 rounded-lg bg-orange-500 text-white shadow-sm">5</span>
+              <span class="p-1 rounded-lg bg-slate-100 text-slate-600">6</span>
+              <span class="p-1 rounded-lg bg-slate-100 text-slate-600">7</span>
+            </div>
+          </div>
+
+          <!-- Keyingi Vebinar -->
+          <div class="bg-white rounded-3xl p-5 border border-slate-100 card-shadow space-y-3">
+            <h4 class="text-sm font-black text-slate-800">Keyingi vebinar</h4>
+            <div class="flex items-center justify-between text-xs text-slate-500">
+              <span>Google Labs (Chuqurlashtirilgan)</span>
+              <span class="font-bold text-blue-600">18:30 Bugun</span>
+            </div>
+            <button onclick="showToast('Vebinar xonasi 10 daqiqa oldin ochiladi', 'info')" class="w-full py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-xs hover:bg-slate-200">
+              Darsga qo‘shilish
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ================= VIEW 2: BARCHA KURSLAR RO'YXATI (1-rasm) ================= -->
+    <div id="view-courses" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <button onclick="switchView('dashboard')" class="inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-orange-500 transition-colors">
+          ← Ortga
+        </button>
+        <h2 class="text-xl font-black text-slate-900">Barcha Kurslaringiz</h2>
+        <div></div>
+      </div>
+
+      <div id="courses-grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+
+    <!-- ================= VIEW 3: MATEMATIKA KURSI XARITASI (5-rasm) ================= -->
+    <div id="view-math-path" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <button onclick="switchView('courses')" class="inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-orange-500 transition-colors">
+          ← Ortga
+        </button>
+      </div>
+
+      <!-- Header kartasi (5-rasm) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-500 text-white flex items-center justify-center text-xl font-bold">📐</div>
+          <div>
+            <h3 class="text-sm font-black text-slate-800">Matematika</h3>
+            <span class="text-xs text-amber-600 font-bold">7 - sinf</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow flex flex-col justify-center">
+          <div class="flex items-center justify-between text-xs font-black text-slate-700 mb-1.5">
+            <span>Sizning taraqqiyotingiz</span>
+            <span class="text-orange-600">54% O‘tildi</span>
+          </div>
+          <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full bg-orange-500 rounded-full" style="width: 54%;"></div>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-3xl text-white shadow-lg shadow-orange-200 flex items-center justify-between cursor-pointer" onclick="openLessonTestModal('math', 6)">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-orange-200 block">23. Dars</span>
+            <h4 class="text-sm font-black">7 - sinf: Birhadni ko‘paytirish</h4>
+          </div>
+          <span class="px-3 py-1 rounded-xl bg-white text-orange-600 font-black text-xs">Davom ettirish ▶</span>
+        </div>
+      </div>
+
+      <!-- Roadmap Xaritasi (Winding Path) -->
+      <div class="bg-white rounded-3xl p-8 border border-slate-100 card-shadow relative overflow-hidden">
+        <div class="text-center mb-6">
+          <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-700 font-extrabold text-xs border border-amber-200">
+            O‘yin Xaritasi: Har bir sinfda 1 ta dars va 1 ta TEST mavjud!
+          </span>
+        </div>
+
+        <div id="math-path-container" class="roadmap-container flex flex-col items-center">
+          <!-- Rendered by app.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 4: GENERAL ENGLISH KURSI (2-rasm) ================= -->
+    <div id="view-english-course" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <button onclick="switchView('courses')" class="inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-orange-500 transition-colors">
+          ← Ortga
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-500 text-white flex items-center justify-center text-xl font-bold">🇬🇧</div>
+          <div>
+            <h3 class="text-sm font-black text-slate-800">General English</h3>
+            <span class="text-xs text-amber-600 font-bold">B1 level</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow flex flex-col justify-center">
+          <div class="flex items-center justify-between text-xs font-black text-slate-700 mb-1.5">
+            <span>Sizning taraqqiyotingiz</span>
+            <span class="text-orange-600">65% O‘tildi</span>
+          </div>
+          <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full bg-orange-500 rounded-full" style="width: 65%;"></div>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-3xl text-white shadow-lg shadow-orange-200 flex items-center justify-between cursor-pointer" onclick="openLessonTestModal('english', 0)">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-orange-200 block">21. Dars</span>
+            <h4 class="text-sm font-black">B1 level: Great discoveries</h4>
+          </div>
+          <span class="px-3 py-1 rounded-xl bg-white text-orange-600 font-black text-xs">Davom ettirish ▶</span>
+        </div>
+      </div>
+
+      <!-- Darslar ro'yxati -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-4">
+        <h3 class="text-base font-black text-slate-900">Ingliz tili darslari va testlari</h3>
+        <div id="english-lessons-container" class="space-y-3">
+          <!-- Rendered by app.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 5: DASTURLASH KURSI ================= -->
+    <div id="view-programming-course" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <button onclick="switchView('courses')" class="inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-orange-500 transition-colors">
+          ← Ortga
+        </button>
+      </div>
+
+      <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-4">
+        <h3 class="text-base font-black text-slate-900">Dasturlash darslari & Testlar</h3>
+        <div id="programming-lessons-container" class="space-y-3">
+          <!-- Rendered by app.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 6: COINSHOP (3-rasmga 100% mos 16 ta mahsulot) ================= -->
+    <div id="view-shop" class="hidden space-y-8">
+      
+      <!-- Top Banner: "Coin'larni qanday qo'lga kiritsa bo'ladi" (3-rasm) -->
+      <div class="bg-white rounded-3xl p-8 border border-slate-100 card-shadow flex flex-col md:flex-row items-center gap-8">
+        
+        <div class="w-44 h-44 shrink-0 flex items-center justify-center robot-animate">
+          <svg class="w-40 h-40 drop-shadow-xl" viewBox="0 0 200 200" fill="none">
+            <rect x="35" y="40" width="130" height="95" rx="30" fill="#e8dfd5" stroke="#786654" stroke-width="4"/>
+            <rect x="48" y="52" width="104" height="72" rx="20" fill="#0f172a"/>
+            <rect x="66" y="70" width="16" height="22" rx="8" fill="#10b981"/>
+            <rect x="118" y="70" width="16" height="22" rx="8" fill="#10b981"/>
+            <path d="M88 100 Q100 112 112 100" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="100" cy="28" r="8" fill="#ff5b22"/>
+          </svg>
+        </div>
+
+        <div class="flex-1 space-y-4">
+          <h2 class="text-2xl font-black text-slate-900 leading-tight">
+            Coin'larni qanday qo‘lga kiritsa bo‘ladi:
+          </h2>
+          
+          <div class="space-y-3">
+            <div class="flex items-start gap-3 p-3 rounded-2xl bg-amber-50/60 border border-amber-100">
+              <span class="text-xl">🪙</span>
+              <div>
+                <h4 class="text-xs font-black text-amber-900">Testlarni birinchi urinishda 100% bajarsangiz: 30 coin</h4>
+                <p class="text-[11px] text-slate-500">Ahamiyat bering, xatolar urinish soni kamaygan sari kamayadi.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3 rounded-2xl bg-amber-50/60 border border-amber-100">
+              <span class="text-xl">🪙</span>
+              <div>
+                <h4 class="text-xs font-black text-amber-900">Amaliy mashg‘ulotni muvaffaqiyatli bajarsangiz: 70 coin</h4>
+                <p class="text-[11px] text-slate-500">Har bir bo‘lim va amaliy topshiriq muvaffaqiyatli yakunlanganda taqdim etiladi.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3 rounded-2xl bg-amber-50/60 border border-amber-100">
+              <span class="text-xl">🪙</span>
+              <div>
+                <h4 class="text-xs font-black text-amber-900">Do‘stingizni o‘quv kursimizga taklif qilsangiz: 1000 coin</h4>
+                <p class="text-[11px] text-slate-500">Platformamizga do‘stingizni taklif qiling va birgalikda o‘rganing!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sovg'alar Ro'yxati (16 ta mahsulot) -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-black text-slate-900">Sovg‘alar sotib oling</h3>
+          <span class="text-xs font-bold text-slate-400">16 ta sovg'a</span>
+        </div>
+
+        <div id="shop-items-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <!-- Rendered by app.js -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= HAR BIR DARS UCHUN 1 TA TEST MODALI ================= -->
+  <div id="lesson-test-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 id="lt-title" class="text-base font-black text-slate-900">Dars va Test</h3>
+          <span class="text-[11px] text-slate-400">Darsni o'zlashtiring va 1 ta test savoliga javob bering</span>
+        </div>
+        <button onclick="closeLessonTestModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold">
+          ✕
+        </button>
+      </div>
+
+      <!-- Dars qisqa tushuntirishi -->
+      <div class="p-4 rounded-2xl bg-slate-900 text-white space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-bold text-orange-400 uppercase tracking-wider">Dars qoidasi</span>
+          <span id="lt-reward-badge" class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-900 font-black text-[10px]">
+            +30 Coin
+          </span>
+        </div>
+        <p id="lt-explanation" class="text-xs text-slate-300 leading-relaxed"></p>
+      </div>
+
+      <!-- 1 Ta Test Savoli -->
+      <div class="space-y-3 pt-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded-md bg-orange-100 text-orange-600 font-extrabold text-[10px]">TEST</span>
+          <h4 id="lt-question-text" class="text-sm font-black text-slate-900"></h4>
+        </div>
+
+        <div id="lt-options-container" class="space-y-2">
+          <!-- Options rendered by JS -->
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100">
+        <button id="lt-submit-btn" onclick="submitLessonTest()" class="w-full py-3.5 rounded-2xl bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-black text-xs shadow-lg shadow-orange-300 transition-all">
+          Testni tekshirish & +Coin olish 🪙
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= COIN TARIXI MODALI ================= -->
+  <div id="coin-history-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 relative max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="text-base font-black text-slate-900">Coin Tarixi</h3>
+          <p class="text-xs text-slate-400">Kirim va chiqimlar hisoboti</p>
+        </div>
+        <button onclick="closeCoinHistory()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold">
+          ✕
+        </button>
+      </div>
+
+      <div class="bg-amber-50 rounded-2xl p-4 border border-amber-200 flex items-center justify-between">
+        <span class="text-xs font-bold text-amber-900">Mavjud Balans:</span>
+        <span class="text-xl font-black text-amber-700 flex items-center gap-1">
+          🪙 <span class="user-coins-display">21,702</span>
+        </span>
+      </div>
+
+      <div id="coin-history-list" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Alert -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-100 py-6 mt-12 text-center text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© 2026 Junior Academy. Barcha huquqlar himoyalangan.</p>
+      <div class="flex items-center gap-4 font-semibold text-slate-500">
+        <a href="javascript:void(0)" onclick="switchView('courses')" class="hover:text-orange-500">Barcha Kurslar</a>
+        <a href="javascript:void(0)" onclick="switchView('math-path')" class="hover:text-orange-500">Matematika</a>
+        <a href="javascript:void(0)" onclick="switchView('english-course')" class="hover:text-orange-500">General English</a>
+        <a href="javascript:void(0)" onclick="switchView('shop')" class="hover:text-orange-500">CoinShop</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
 </html>
